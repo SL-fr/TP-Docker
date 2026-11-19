@@ -1,4 +1,4 @@
-# TP-Docker# Project SIOSISR
+# Project SIOSISR
 
 ## TP Docker / Introduction à Docker
 
@@ -15,7 +15,7 @@ Ce TP (BTS SIO SISR) présente les bases de Docker. Il comporte quatre objectifs
 - **Créer ses propres images** avec un `Dockerfile`, puis comparer une image Debian et une image Alpine.
 - **Orchestrer des containers** avec Docker Compose : une application Flask et sa base Redis.
 
-Ce compte rendu présente la démarche, les commandes utilisées et les validations (captures d'écran dans le dossier `images/`).
+Ce compte rendu présente la démarche, les commandes utilisées et les validations (captures d'écran dans le dossier `IMG docker/`).
 
 ---
 
@@ -61,7 +61,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 sudo docker run hello-world
 ```
 
-![hello-world](images/01-hello-world.png)
+![hello-world](IMG%20docker/01-hello-world.png)
 
 Pour utiliser `docker` sans `sudo`, ajout de l'utilisateur au groupe `docker` puis reconnexion SSH :
 
@@ -71,7 +71,7 @@ groups
 docker ps
 ```
 
-![groupe docker](images/02-groupe-docker.png)
+![groupe docker](IMG%20docker/02-groupe-docker.png)
 
 Versions installées :
 
@@ -80,7 +80,7 @@ docker -v
 docker-compose -v
 ```
 
-![versions](images/03-versions.png)
+![versions](IMG%20docker/03-versions.png)
 
 ---
 
@@ -101,7 +101,7 @@ curl localhost:8080
 | `-d` | Mode détaché (arrière-plan) |
 | `nginx` | Image utilisée |
 
-![nginx](images/04-nginx.png)
+![nginx](IMG%20docker/04-nginx.png)
 
 ### 4.2 Fonction des commandes
 
@@ -111,7 +111,7 @@ curl localhost:8080
 | `docker ps -a` | Liste tous les containers, y compris arrêtés |
 | `docker images` | Liste les images présentes en local |
 
-![ps et images](images/05-ps-a-images.png)
+![ps et images](IMG%20docker/05-ps-a-images.png)
 
 ### 4.3 Arrêter et supprimer
 
@@ -123,9 +123,9 @@ curl localhost:8080
 
 Après l'arrêt, `docker ps` est vide alors que `docker ps -a` montre le container avec le statut `Exited (0)`.
 
-![stop](images/06-stop.png)
+![stop](IMG%20docker/06-stop.png)
 
-![rm et rmi](images/07-rm-rmi.png)
+![rm et rmi](IMG%20docker/07-rm-rmi.png)
 
 ### 4.4 Apache
 
@@ -138,7 +138,7 @@ curl localhost:8081
 
 `docker pull` télécharge seulement l'image, alors que `docker run` crée et démarre un container.
 
-![apache](images/08-apache.png)
+![apache](IMG%20docker/08-apache.png)
 
 ---
 
@@ -162,7 +162,7 @@ RUN apt-get update \
 
 > Le sujet annonce l'outil `tree` sans l'installer : il a été ajouté. `MAINTAINER`, déprécié, est remplacé par `LABEL maintainer`.
 
-![Dockerfile Debian](images/09-dockerfile-debian.png)
+![Dockerfile Debian](IMG%20docker/09-dockerfile-debian.png)
 
 Construction et vérification de la taille :
 
@@ -171,9 +171,9 @@ docker build -t btssio:v1.0 .
 docker images
 ```
 
-![fin du build Debian](images/10a-build-debian.png)
+![fin du build Debian](IMG%20docker/10a-build-debian.png)
 
-![taille de l'image Debian](images/10b-images-debian.png)
+![taille de l'image Debian](IMG%20docker/10b-images-debian.png)
 
 Lancement et test des outils :
 
@@ -182,7 +182,7 @@ docker run -tid --name sisr btssio:v1.0
 docker exec -ti sisr bash
 ```
 
-![outils Debian](images/11-outils-debian.png)
+![outils Debian](IMG%20docker/11-outils-debian.png)
 
 ### 5.2 Image plus légère avec Alpine
 
@@ -199,7 +199,7 @@ LABEL maintainer="BTS SIO2 SISR"
 RUN apk add --no-cache vim git htop mc tree
 ```
 
-![Dockerfile Alpine](images/12-dockerfile-alpine.png)
+![Dockerfile Alpine](IMG%20docker/12-dockerfile-alpine.png)
 
 ```bash
 docker build -t btssio:v2.0 .
@@ -219,13 +219,13 @@ docker exec -ti sisr2 sh
 
 L'image Alpine est environ quatre fois plus légère, avec les mêmes outils.
 
-![build Alpine](images/13a-build-alpine.png)
+![build Alpine](IMG%20docker/13a-build-alpine.png)
 
-![comparaison des tailles](images/13b-comparaison-tailles.png)
+![comparaison des tailles](IMG%20docker/13b-comparaison-tailles.png)
 
-![container Alpine](images/14a-container-alpine.png)
+![container Alpine](IMG%20docker/14a-container-alpine.png)
 
-![outils Alpine](images/14b-outils-alpine.png)
+![outils Alpine](IMG%20docker/14b-outils-alpine.png)
 
 Nettoyage de fin de partie :
 
@@ -235,7 +235,7 @@ docker rmi btssio:v1.0 btssio:v2.0
 docker ps -a
 ```
 
-![nettoyage](images/15-nettoyage.png)
+![nettoyage](IMG%20docker/15-nettoyage.png)
 
 ---
 
@@ -274,7 +274,7 @@ ls
 docker build -t monimage .
 ```
 
-![fichiers et build](images/16-fichiers-build.png)
+![fichiers et build](IMG%20docker/16-fichiers-build.png)
 
 Sans Redis, la page s'affiche mais le compteur est désactivé : il faut un second container relié au premier.
 
@@ -307,7 +307,7 @@ networks:
 - `environment` : `NOM=les SISR` remplace la valeur du Dockerfile.
 - `hostname: SaintLuc` : modification demandée en fin de sujet, le hostname affiché est `SaintLuc`.
 
-![docker-compose.yml](images/17-docker-compose-yml.png)
+![docker-compose.yml](IMG%20docker/17-docker-compose-yml.png)
 
 ### 6.3 Lancement et validation
 
@@ -316,7 +316,7 @@ docker-compose up -d
 docker ps
 ```
 
-![compose up](images/18-compose-up.png)
+![compose up](IMG%20docker/18-compose-up.png)
 
 ```bash
 curl localhost
@@ -325,7 +325,7 @@ curl localhost
 
 La page affiche `Hello les SISR!`, `Hostname: SaintLuc` et un compteur qui augmente à chaque appel.
 
-![validation](images/19-validation-curl.png)
+![validation](IMG%20docker/19-validation-curl.png)
 
 ---
 
@@ -338,6 +338,6 @@ docker ps -a
 docker images
 ```
 
-![nettoyage final](images/20-nettoyage-final.png)
+![nettoyage final](IMG%20docker/20-nettoyage-final.png)
 
 Ce TP a permis de lancer des containers depuis Docker Hub, de construire deux images avec un Dockerfile (266 MB avec Debian, 66 MB avec Alpine) et d'orchestrer une application Flask et sa base Redis avec Docker Compose. Le choix de l'image de base a un effet direct sur la taille, et le réseau défini dans le fichier Compose permet aux containers de communiquer par leur nom de service.
